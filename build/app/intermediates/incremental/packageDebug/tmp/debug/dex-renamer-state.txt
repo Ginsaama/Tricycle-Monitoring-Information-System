@@ -1,0 +1,4 @@
+#Thu Jan 25 10:30:05 PST 2024
+base.0=/Users/comargo/Desktop/flutter/login2/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
