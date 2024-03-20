@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:login2/model/users.dart';
 import 'package:login2/database/db_helper.dart';
 
+import 'loginPage.dart';
+
 class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
@@ -11,7 +16,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _signUp() async {
+  void _signUp(BuildContext context) async {
     String username = _usernameController.text.trim();
     String password = _passwordController.text.trim();
 
@@ -22,19 +27,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
     int result = await DatabaseHelper.instance.insertUser(newUser);
 
     if (result != 0) {
-      // Successful sign-up
-      print('Sign-up successful');
+      _usernameController.clear();
+      _passwordController.clear();
+      Fluttertoast.showToast(
+        msg: "Successfully signed up! Please log in.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginScreen(),
+        ),
+      );
     } else {
-      // Failed sign-up
-      print('Sign-up failed');
+      Fluttertoast.showToast(
+        msg: "Sign-up failed. Please try again.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFD2C972),
       appBar: AppBar(
-        title: Text('Sign Up'),
+        backgroundColor: Colors.transparent,
+        title: const Text('Sign Up'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -43,19 +72,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
           children: [
             TextField(
               controller: _usernameController,
-              style: TextStyle(color: Colors.black),
+              style: const TextStyle(color: Colors.black),
               decoration: InputDecoration(
-                  fillColor: Colors.grey.shade100,
-                  filled: true,
-                  hintText: "Email",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  )),
+                fillColor: Colors.grey.shade100,
+                filled: true,
+                hintText: "Email",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextField(
               controller: _passwordController,
-              style: TextStyle(color: Colors.black),
+              style: const TextStyle(color: Colors.black),
               decoration: InputDecoration(
                   fillColor: Colors.grey.shade100,
                   filled: true,
@@ -65,21 +95,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   )),
               obscureText: true,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _signUp,
+              onPressed: () {
+                _signUp(context);
+              },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
                   vertical: 15,
                   horizontal: 60,
                 ),
-                backgroundColor: Color.fromARGB(255, 102, 96, 20),
+                backgroundColor: const Color.fromARGB(255, 102, 96, 20),
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40),
                 ),
               ),
-              child: Text('Sign Up'),
+              child: const Text('Sign Up'),
             ),
           ],
         ),

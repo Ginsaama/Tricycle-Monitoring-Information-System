@@ -37,6 +37,7 @@ dependencies:
   # SQLite
   sqflite: ^2.0.0
   path: ^1.8.0
+  fluttertoast: ^8.2.4
   google_sign_in: ^6.2.1
 
 dev_dependencies:
